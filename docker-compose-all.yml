@@ -1,0 +1,33 @@
+version: '2.1'
+
+services:
+  kafka:
+    image: landoop/fast-data-dev:latest
+    ports:
+      - 2181:2181
+      - 3030:3030
+      - 8081-8083:8081-8083
+      - 9581-9585:9581-9585
+      - 9092:9092
+    environment:
+      - ADV_HOST=kafka
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ZOOKEEPER_CONNECT=kafka:2181
+    healthcheck:
+      test: ["CMD", "curl", "-s", "kafka:3030"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+  cassandra:
+    image: cassandra
+    ports:
+      - 9042:9042
+
+  thrift-server:
+    image: thrift-server
+    ports:
+      - 9090:9090
+    depends_on:
+      kafka:
+        condition: service_healthy
