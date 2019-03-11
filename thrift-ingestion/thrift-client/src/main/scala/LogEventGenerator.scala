@@ -5,8 +5,12 @@ import java.util.Date
 import thrift.logschema.{DeviceType, LogEvent, LogType}
 import scala.util.Random
 
+/**
+  * Randomly generates log events
+  * */
 object LogEventGenerator {
 
+  // a list with pollsters
   private lazy val pollsters = Set(
     "Public Policy Polling",
     "YouGov",
@@ -18,6 +22,7 @@ object LogEventGenerator {
     "NBC/WSJ"
   )
 
+  // a map of pollsters and their urls
   private lazy  val pollsterUrls = Map(
     "Public Policy Polling" -> "http://www.publicpolicypolling.com/pdf/2017/PPP_Release_National_61217.pdf",
     "YouGov" -> "https://d25d2506sfb94s.cloudfront.net/cumulus_uploads/document/4vf8rhr0jz/econToplines.pdf",
@@ -33,6 +38,9 @@ object LogEventGenerator {
 
   private lazy  val random = new Random()
 
+  /**
+    * Randomly generates an event
+    * */
   def generateLogEvent(): LogEvent = {
     val pollster = pollsters.toSeq(random.nextInt(pollsters.size))
     val pollsterUrl = pollsterUrls.getOrElse(pollster, "")
@@ -56,6 +64,10 @@ object LogEventGenerator {
     )
   }
 
+  /**
+    * Creates random dates for the start and end of a poll
+    * the dates are in the format dd/mm/yyyy
+    * */
   private def getStartEndDates(): (String, String) = {
     val year = random.nextInt(9) + 2010
     val month = {

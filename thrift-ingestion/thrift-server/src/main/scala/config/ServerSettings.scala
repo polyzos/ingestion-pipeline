@@ -2,6 +2,9 @@ package config
 
 import com.typesafe.config.ConfigFactory
 
+/**
+  * Loads the necessary configuration for the app
+  * */
 trait ServerSettings {
 
   private val config = ConfigFactory.load()

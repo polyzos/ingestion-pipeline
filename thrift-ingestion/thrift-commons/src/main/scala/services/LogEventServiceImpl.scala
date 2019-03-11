@@ -4,6 +4,9 @@ import com.typesafe.scalalogging.LazyLogging
 import thrift.logschema.{LogEvent, LogEventService}
 import utils.{EventLogConsumer, EventLogProducer, KafkaProps}
 
+/**
+  * Implementation of the services from thrift definition
+  * */
 class LogEventServiceImpl extends LogEventService.Iface with LazyLogging{
 
   override def pushLogEvent(logEvent: LogEvent): Unit = {

@@ -7,6 +7,10 @@ import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.{StringDeserializer, StringSerializer}
 import serde.{LogEventDeserializer, LogEventSerializer}
 
+/**
+  * Holds the properties necessary for the
+  * kafka producers and consumers
+  * */
 object KafkaProps {
   private val bootstrapServers = "localhost:9092"
 

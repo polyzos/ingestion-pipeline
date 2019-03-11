@@ -8,6 +8,9 @@ import thrift.logschema.LogEvent
 
 import scala.util.{Failure, Success, Try}
 
+/**
+  * Deserializer for the LogEvent Object
+  * */
 class LogEventDeserializer extends Deserializer[LogEvent] {
   override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = {}
 

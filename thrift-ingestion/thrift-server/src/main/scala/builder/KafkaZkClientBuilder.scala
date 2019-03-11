@@ -5,6 +5,9 @@ import org.apache.kafka.common.utils.Time
 
 import scala.util.{Failure, Success, Try}
 
+/**
+  * Creates a zk client
+  * */
 object KafkaZkClientBuilder {
   def apply(connectString: String,
             isSecure: Boolean,

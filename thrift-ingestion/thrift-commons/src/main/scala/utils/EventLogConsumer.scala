@@ -10,6 +10,9 @@ import utils.KafkaProps.KafkaConsumerProps
 
 import scala.util.{Failure, Success, Try}
 
+/**
+  * Creates a kafka consumer and handles log event consumption
+  * */
 object EventLogConsumer extends KafkaConsumerProps with LazyLogging {
   private val queue = new LinkedBlockingQueue[LogEvent]
 

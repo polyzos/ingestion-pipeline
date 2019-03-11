@@ -5,6 +5,10 @@ import thrift.logschema.LogEventService
 
 import scala.util.{Failure, Success, Try}
 
+/**
+  * The entry point for the thrift client
+  *   Setups a client and sends events to kafka
+  * */
 object ThriftClient extends LazyLogging {
 
   private def invoke(): Unit = {

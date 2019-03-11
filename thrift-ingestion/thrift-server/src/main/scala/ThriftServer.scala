@@ -9,6 +9,12 @@ import thrift.logschema.LogEventService
 
 import scala.util.{Failure, Success, Try}
 
+/**
+  * Thrift Server is the entry point of the server module
+  *   1. Connect to kafka
+  *   2. Creates the necessary topic
+  *   3. Launches the server and waits for incoming requests
+  * */
 object ThriftServer extends ServerSettings with LazyLogging {
 
   private def start(): Unit = {
@@ -20,6 +26,7 @@ object ThriftServer extends ServerSettings with LazyLogging {
       connectionTimeoutMS,
       maxInFlightRequests)
 
+    // Creates a topic on kafka
     Try(new AdminZkClient(kafkaZkClient.get)) match {
       case Success(adminZkClient) =>
         if (!kafkaZkClient.get.topicExists(topic)) {
@@ -38,6 +45,7 @@ object ThriftServer extends ServerSettings with LazyLogging {
         System.exit(0)
     }
 
+    // Setup the server
     Try(new TNonblockingServerSocket(serverPort)) match {
       case Success(transport) =>
         val processor = new LogEventService.Processor(new LogEventServiceImpl())

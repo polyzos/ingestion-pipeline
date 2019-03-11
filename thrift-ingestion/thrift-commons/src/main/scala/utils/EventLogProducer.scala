@@ -7,6 +7,9 @@ import utils.KafkaProps.KafkaProducerProps
 
 import scala.util.{Failure, Success, Try}
 
+/**
+  * Creates a kafka producer and handles the event ingestion
+  * */
 object EventLogProducer extends KafkaProducerProps with LazyLogging{
 
   private lazy val kafkaProducer = Try(new KafkaProducer[String, LogEvent](props)) match {
