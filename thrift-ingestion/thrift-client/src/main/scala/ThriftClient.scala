@@ -9,7 +9,7 @@ object ThriftClient extends LazyLogging {
 
   private def invoke(): Unit = {
     logger.info("Starting Thrift Client ...")
-    Try(new TFramedTransport(new TSocket("thrift-server", 9090))) match {
+    Try(new TFramedTransport(new TSocket("localhost", 9090))) match {
       case Success(transport) =>
         val protocol = new TBinaryProtocol(transport)
 

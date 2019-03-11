@@ -8,7 +8,7 @@ import org.apache.kafka.common.serialization.{StringDeserializer, StringSerializ
 import serde.{LogEventDeserializer, LogEventSerializer}
 
 object KafkaProps {
-  private val bootstrapServers = "kafka:9092"
+  private val bootstrapServers = "localhost:9092"
 
   val topic = "event-logs"
 
