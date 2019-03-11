@@ -35,6 +35,11 @@ services:
     image: thrift-server
     ports:
       - 9090:9090
+    healthcheck:
+      test: ["CMD", "curl", "-s", "thrift-server:9090"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
     depends_on:
       kafka:
         condition: service_healthy
@@ -42,7 +47,8 @@ services:
   thrift-client:
     image: thrift-client
     depends_on:
-      - thrift-server
+      thrift-server:
+        condition: service_healthy
 
   kafka-consumer:
     image: kafka-consumer

@@ -9,7 +9,7 @@ import thrift.logschema.LogEvent
 import scala.concurrent.Future
 
 object LogEventConnector extends Settings{
-    val connector: CassandraConnection = ContactPoint.local
+    val connector: CassandraConnection = ContactPoint("kafka", 9042)
       .withClusterBuilder(_.withSocketOptions(
         new SocketOptions()
           .setConnectTimeoutMillis(connectionTimeout)
