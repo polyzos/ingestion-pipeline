@@ -4,13 +4,13 @@ import actors.CassandraWorkerActor.StoreRequest
 import akka.actor.ActorSystem
 import akka.routing.RoundRobinPool
 import com.typesafe.scalalogging.LazyLogging
-import db.{LogEventDBProvider, LogService}
 import org.apache.thrift.TException
 import org.apache.thrift.protocol.TBinaryProtocol
 import org.apache.thrift.transport.{TFramedTransport, TSocket}
 import thrift.logschema.LogEventService
 import com.outworkers.phantom.dsl._
 import config.Settings
+import db.{LogEventServiceProvider, LogEventDBProvider}
 
 import scala.util.{Failure, Success, Try}
 
@@ -21,7 +21,7 @@ import scala.util.{Failure, Success, Try}
   * */
 object KafkaConsumer extends LazyLogging with Settings{
 
-  private[this] lazy val cassandraService = new LogService with LogEventDBProvider
+  private[this] lazy val cassandraService = new LogEventServiceProvider with LogEventDBProvider
 
   private[this] implicit val system: ActorSystem = ActorSystem("kafka-consumer")
 

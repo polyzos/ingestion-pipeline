@@ -38,7 +38,7 @@ abstract class LogEventTable extends Table[LogEventTable, LogEvent] {
       .future()
   }
 
-  private def parseDate(date: String, pattern: String) = {
+  private def parseDate(date: String, pattern: String): DateTime = {
     DateTimeFormat
       .forPattern(pattern)
       .parseDateTime(date)

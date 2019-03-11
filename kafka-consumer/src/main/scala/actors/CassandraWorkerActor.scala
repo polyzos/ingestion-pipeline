@@ -1,6 +1,6 @@
 package actors
 import akka.actor.{Actor, ActorLogging, Props}
-import db.{LogEventDBProvider, LogService}
+import db.{LogEventDBProvider, LogEventServiceProvider}
 import thrift.logschema.LogEvent
 
 
@@ -11,12 +11,12 @@ import thrift.logschema.LogEvent
 object CassandraWorkerActor {
   case class StoreRequest(logEvent: LogEvent)
 
-  def props(cassandraService: LogService with LogEventDBProvider) = Props(
+  def props(cassandraService: LogEventServiceProvider with LogEventDBProvider) = Props(
     new CassandraWorkerActor(cassandraService)
   )
 }
 
-class CassandraWorkerActor(cassandraService: LogService with LogEventDBProvider)
+class CassandraWorkerActor(cassandraService: LogEventServiceProvider with LogEventDBProvider)
   extends Actor
     with ActorLogging {
 
