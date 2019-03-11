@@ -19,6 +19,28 @@ The Log Event describes data from a poll campaigns
 | device | Where the vote came from - can be [WEBAPP, ANDROID, IOS OR OTHER]|
 | message  | Type of log message - can be [LOG, DEBUG, ERROR, WARNING]|
 
+
+Cassandra Mapping
+--------------------
+
+```
+CREATE TABLE log_events.logeventtable (
+    pollster text,
+    currentdate timestamp,
+    device text,
+    enddate timestamp,
+    favor int,
+    message text,
+    oppose int,
+    startdate timestamp,
+    total int,
+    url text,
+    version int,
+    PRIMARY KEY (pollster, currentdate)
+) WITH CLUSTERING ORDER BY (currentdate ASC)
+
+```
+
 Running The App
 ---------------
 1. At the root folder run **docker-compose up** to run Kafka and Cassandra (wait for 30 seconds)
