@@ -2,6 +2,9 @@
 
 Log Event Data Format
 --------------------
+
+The Log Event describes data from a poll campaigns
+
 | Field  | Description|
 | ------------- | ------------- |
 | version  | The current Schema version |
