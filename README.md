@@ -16,8 +16,8 @@ The Log Event describes data from poll campaigns
 | oppose | Number of voters that are against  |
 | total | Total number of voters |
 | url | The pollster's url |
-| device | Where the vote came from - can be [WEBAPP, ANDROID, IOS OR OTHER]|
-| message  | Type of log message - can be [LOG, DEBUG, ERROR, WARNING]|
+| device | Where the vote came from -[WEBAPP, ANDROID, IOS OR OTHER]|
+| message  | Type of log message    -[LOG, DEBUG, ERROR, WARNING]|
 
 Running The App
 ---------------
