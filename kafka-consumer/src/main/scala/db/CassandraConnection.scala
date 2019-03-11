@@ -2,9 +2,9 @@ package db
 
 import com.datastax.driver.core.SocketOptions
 import com.outworkers.phantom.dsl._
-import config.CassandraSettings
+import config.Settings
 
-object LogConnector extends CassandraSettings{
+object LogConnector extends Settings{
     val connector: CassandraConnection = ContactPoint.local
       .withClusterBuilder(_.withSocketOptions(
         new SocketOptions()

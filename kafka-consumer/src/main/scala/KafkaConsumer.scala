@@ -1,26 +1,40 @@
-import actors.CassandraActor
-import actors.CassandraActor.StoreRequest
-import akka.actor.{ActorSystem, Props}
-import com.typesafe.config.ConfigFactory
+
+import actors.CassandraWorkerActor
+import actors.CassandraWorkerActor.StoreRequest
+import akka.actor.ActorSystem
+import akka.routing.RoundRobinPool
 import com.typesafe.scalalogging.LazyLogging
+import db.{LogEventDBProvider, LogService}
 import org.apache.thrift.TException
 import org.apache.thrift.protocol.TBinaryProtocol
 import org.apache.thrift.transport.{TFramedTransport, TSocket}
 import thrift.logschema.LogEventService
+import com.outworkers.phantom.dsl._
+import config.Settings
 
 import scala.util.{Failure, Success, Try}
 
-object KafkaConsumer extends LazyLogging{
+/**
+  * KafkaConsumer is the entry point
+  *    reads data from Kafka and stores them into Cassandra
+  *    using actor workers
+  * */
+object KafkaConsumer extends LazyLogging with Settings{
 
-  private[this] implicit val system = ActorSystem("kafka-consumer")
-  private[this] lazy val clientConfg = ConfigFactory.load().getConfig("client")
+  private[this] lazy val cassandraService = new LogService with LogEventDBProvider
 
+  private[this] implicit val system: ActorSystem = ActorSystem("kafka-consumer")
+
+  /**
+    * Creates a client to connect to the thrift server
+    * consumes messages and sends them to actor workers
+    * */
   private def invoke(): Unit = {
     logger.info("Starting Kafka Consumer ..")
-    val cassandraActor = system.actorOf(Props[CassandraActor], "cassandra-actor")
-
-    val host = clientConfg.getString("host")
-    val port = clientConfg.getInt("port")
+    val cassandraPoolMaster = system.actorOf(
+      RoundRobinPool(5)
+        .props(CassandraWorkerActor.props(cassandraService)
+        ), "cassandraPoolMaster")
 
     Try(new TFramedTransport(new TSocket(host, port))) match {
       case Success(transport) =>
@@ -32,7 +46,7 @@ object KafkaConsumer extends LazyLogging{
           try {
             val logEvent = client.pullLogEvent()
             logger.info(s"[Client] received: $logEvent")
-            cassandraActor ! StoreRequest(logEvent)
+            cassandraPoolMaster ! StoreRequest(logEvent)
           } catch {
             case _: TException =>
           }
@@ -43,6 +57,7 @@ object KafkaConsumer extends LazyLogging{
   }
 
   def main(args: Array[String]): Unit = {
+    cassandraService.database.create()
     invoke()
   }
 }

@@ -2,7 +2,7 @@ package config
 
 import com.typesafe.config.ConfigFactory
 
-trait CassandraSettings {
+trait Settings {
 
   private val config = ConfigFactory.load()
 
@@ -14,4 +14,8 @@ trait CassandraSettings {
   lazy val readTimeout: Int       = cassandraConf.getInt("readTimeout")
   lazy val replicationFactor: Int = cassandraConf.getInt("replicationFactor")
 
+  private val clientConfig = ConfigFactory.load().getConfig("client")
+
+  lazy val host: String = clientConfig.getString("host")
+  lazy val port: Int = clientConfig.getInt("port")
 }
